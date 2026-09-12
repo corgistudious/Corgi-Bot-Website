@@ -60,3 +60,4 @@ Cloudflare Pages:
 ## Lưu ý bảo mật
 
 Frontend chỉ dùng Supabase Publishable/Anon key. Không đưa `service_role`, Discord Bot Token, MongoDB URI hoặc secret key vào `VITE_*`.
+.
