@@ -1,5 +1,7 @@
 import { Check, Crown, Sparkles } from 'lucide-react';
 
+const premiumUrl = 'https://discord.com/discovery/applications/1535411104128438392/store/1546685153252737135';
+
 export default function Premium() {
   return (
     <section className="section page-section">
@@ -12,7 +14,8 @@ export default function Premium() {
         <div className="premium-badge"><Crown size={30}/></div>
         <div>
           <span className="eyebrow"><Sparkles size={14}/> Corgi Premium</span>
-          <h2>Premium perks</h2>
+          <h2>Corgi Premium Standard</h2>
+          <p className="muted">5,99 US$ / tháng · áp dụng cho 1 Discord server</p>
         </div>
         <ul>
           <li><Check size={18}/> Quyền lợi Premium trong bot</li>
@@ -21,6 +24,9 @@ export default function Premium() {
           <li><Check size={18}/> Nội dung Premium sẽ tiếp tục được mở rộng</li>
         </ul>
         <p className="muted">AI cơ bản vẫn miễn phí — không yêu cầu Premium.</p>
+        <a className="btn primary" href={premiumUrl} target="_blank" rel="noreferrer">
+          <Crown size={18}/> Mua Premium trên Discord
+        </a>
       </div>
     </section>
   );
