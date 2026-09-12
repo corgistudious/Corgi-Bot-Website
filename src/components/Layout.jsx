@@ -1,0 +1,31 @@
+import { NavLink } from 'react-router-dom';
+import { Bot, Crown, HelpCircle, Home, Menu, Terminal, X, Newspaper, MessagesSquare, Info, LogIn, UserRound, ShieldCog } from 'lucide-react';
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { roleAtLeast } from '../lib/community';
+
+const invite = import.meta.env.VITE_DISCORD_INVITE_URL || '#';
+
+export default function Layout({ children }) {
+  const [open, setOpen] = useState(false);
+  const { user, profile } = useAuth();
+  const nav = [
+    ['/', 'Trang chủ', Home], ['/commands', 'Lệnh', Terminal], ['/news', 'Tin tức', Newspaper],
+    ['/forum', 'Diễn đàn', MessagesSquare], ['/premium', 'Premium', Crown], ['/support', 'Hỗ trợ', HelpCircle],
+  ];
+  const accountLabel = profile?.display_name || user?.user_metadata?.name || 'Hồ sơ';
+  return <div className="site-shell">
+    <header className="topbar">
+      <NavLink to="/" className="brand" onClick={()=>setOpen(false)}><div className="brand-mark"><Bot size={26}/></div><div><strong>Corgi-Bot</strong><span>OFFICIAL COMMUNITY</span></div></NavLink>
+      <nav className={`nav ${open?'open':''}`}>
+        {nav.map(([to,label,Icon])=><NavLink key={to} to={to} end={to==='/'} onClick={()=>setOpen(false)}><Icon size={17}/>{label}</NavLink>)}
+        {roleAtLeast(profile?.role,'moderator') && <NavLink to="/admin" onClick={()=>setOpen(false)}><ShieldCog size={17}/>Quản trị</NavLink>}
+        <NavLink className="account-link" to={user?'/profile':'/login'} onClick={()=>setOpen(false)}>{user?<UserRound size={17}/>:<LogIn size={17}/>} {user?accountLabel:'Đăng nhập'}</NavLink>
+        <a className="invite-small" href={invite} target="_blank" rel="noreferrer">Thêm bot</a>
+      </nav>
+      <button className="menu-btn" onClick={()=>setOpen(!open)} aria-label="Menu">{open?<X/>:<Menu/>}</button>
+    </header>
+    <main>{children}</main>
+    <footer className="footer"><div><strong>Corgi-Bot</strong><p>Website chính thức & cộng đồng của Corgi-Bot — tin tức, diễn đàn, hỗ trợ và quản trị.</p></div><div className="footer-links"><NavLink to="/about"><Info size={14}/> Giới thiệu</NavLink><NavLink to="/terms">Điều khoản</NavLink><NavLink to="/privacy">Quyền riêng tư</NavLink></div><span>© 2026 Corgi Studio</span></footer>
+  </div>;
+}
