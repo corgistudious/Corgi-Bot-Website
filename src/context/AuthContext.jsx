@@ -23,8 +23,10 @@ export function AuthProvider({ children }) {
   async function loadProfile(user) {
     if (!supabase || !user) { setProfile(null); return; }
     const fallback = discordProfile(user);
-    await supabase.from('profiles').upsert(fallback, { onConflict: 'id' });
-    const { data } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
+    const { error: upsertError } = await supabase.from('profiles').upsert(fallback, { onConflict: 'id' });
+    if (upsertError) console.warn('Profile upsert failed:', upsertError.message);
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
+    if (error) console.warn('Profile load failed:', error.message);
     setProfile(data || { ...fallback, role: 'member' });
   }
 
@@ -34,26 +36,63 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!supabase) { setLoading(false); return undefined; }
-    supabase.auth.getSession().then(async ({ data }) => {
-      setSession(data.session || null);
-      await loadProfile(data.session?.user);
+    let alive = true;
+
+    // Keep the auth callback synchronous. Supabase warns against awaiting
+    // other Supabase calls from inside onAuthStateChange because it can
+    // deadlock session handling in the same client.
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (!alive) return;
+      setSession(nextSession || null);
       setLoading(false);
+      queueMicrotask(() => {
+        if (alive) loadProfile(nextSession?.user).catch(console.error);
+      });
     });
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
-      setSession(nextSession);
-      await loadProfile(nextSession?.user);
+
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (!alive) return;
+      if (error) console.warn('Session restore failed:', error.message);
+      const current = data?.session || null;
+      setSession(current);
       setLoading(false);
+      if (current?.user) loadProfile(current.user).catch(console.error);
+      else setProfile(null);
     });
-    return () => listener.subscription.unsubscribe();
+
+    return () => {
+      alive = false;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   async function signInWithDiscord() {
     if (!supabase) return { error: new Error('Supabase chưa được cấu hình.') };
-    return supabase.auth.signInWithOAuth({ provider: 'discord', options: { redirectTo: `${window.location.origin}/auth/callback` } });
+    const redirectTo = `${window.location.origin}/auth/callback`;
+    return supabase.auth.signInWithOAuth({
+      provider: 'discord',
+      options: { redirectTo },
+    });
   }
-  async function signOut() { if (supabase) await supabase.auth.signOut(); }
 
-  const value = useMemo(() => ({ session, user: session?.user || null, profile, loading, configured: supabaseConfigured, signInWithDiscord, signOut, refreshProfile }), [session, profile, loading]);
+  async function signOut() {
+    if (supabase) await supabase.auth.signOut();
+    setSession(null);
+    setProfile(null);
+  }
+
+  const value = useMemo(() => ({
+    session,
+    user: session?.user || null,
+    profile,
+    loading,
+    configured: supabaseConfigured,
+    signInWithDiscord,
+    signOut,
+    refreshProfile,
+  }), [session, profile, loading]);
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
+
 export function useAuth() { return useContext(AuthContext); }
