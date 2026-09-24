@@ -1,0 +1,3 @@
+const suffixes=['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];
+export function compactNumber(value){const n=Number(value||0);if(!Number.isFinite(n))return '0';const sign=n<0?'-':'';let x=Math.abs(n),i=0;while(x>=1000&&i<suffixes.length-1){x/=1000;i++}const digits=x>=100?0:x>=10?1:2;return `${sign}${Number(x.toFixed(digits))}${suffixes[i]}`}
+export function parseCompactNumber(value){const s=String(value??'').trim().replace(/,/g,'');const m=s.match(/^([0-9]+(?:\.[0-9]+)?)\s*(K|M|B|T|QA|QI|SX|SP|OC|NO|DC)?$/i);if(!m)return NaN;const i=suffixes.map(x=>x.toUpperCase()).indexOf((m[2]||'').toUpperCase());const n=Number(m[1])*1000**Math.max(0,i);return Number.isSafeInteger(Math.round(n))?Math.round(n):NaN}
