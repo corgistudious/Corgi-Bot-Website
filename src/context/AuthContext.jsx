@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { supabase, supabaseConfigured } from '../lib/supabase';
+import { botApi, botApiConfigured } from '../lib/botApi';
 
 const AuthContext = createContext(null);
 
@@ -20,18 +21,35 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(supabaseConfigured);
 
-  async function loadProfile(user) {
+  async function loadProfile(user, accessToken = null) {
     if (!supabase || !user) { setProfile(null); return; }
     const fallback = discordProfile(user);
     const { error: upsertError } = await supabase.from('profiles').upsert(fallback, { onConflict: 'id' });
     if (upsertError) console.warn('Profile upsert failed:', upsertError.message);
     const { data, error } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
     if (error) console.warn('Profile load failed:', error.message);
-    setProfile(data || { ...fallback, role: 'member' });
+
+    // Website authorization is owned by the bot backend (MongoDB WebRole),
+    // never by the editable Supabase profile row.
+    let webIdentity = null;
+    if (botApiConfigured && accessToken) {
+      try {
+        webIdentity = await botApi.me(accessToken);
+      } catch (apiError) {
+        console.warn('Website role load failed:', apiError.message);
+      }
+    }
+
+    setProfile({
+      ...fallback,
+      ...(data || {}),
+      discord_id: webIdentity?.discordId || data?.discord_id || fallback.discord_id,
+      role: webIdentity?.role || 'member',
+    });
   }
 
   async function refreshProfile() {
-    if (session?.user) await loadProfile(session.user);
+    if (session?.user) await loadProfile(session.user, session.access_token);
   }
 
   useEffect(() => {
@@ -46,7 +64,7 @@ export function AuthProvider({ children }) {
       setSession(nextSession || null);
       setLoading(false);
       queueMicrotask(() => {
-        if (alive) loadProfile(nextSession?.user).catch(console.error);
+        if (alive) loadProfile(nextSession?.user, nextSession?.access_token).catch(console.error);
       });
     });
 
@@ -56,7 +74,7 @@ export function AuthProvider({ children }) {
       const current = data?.session || null;
       setSession(current);
       setLoading(false);
-      if (current?.user) loadProfile(current.user).catch(console.error);
+      if (current?.user) loadProfile(current.user, current.access_token).catch(console.error);
       else setProfile(null);
     });
 
