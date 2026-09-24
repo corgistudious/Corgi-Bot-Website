@@ -24,7 +24,7 @@ export default function NewsArticle(){
   async function toggleLike(){ if(!user)return; if(liked) await supabase.from('article_likes').delete().eq('article_id',article.id).eq('user_id',user.id); else await supabase.from('article_likes').insert({article_id:article.id,user_id:user.id}); setLiked(!liked); setLikes(v=>v+(liked?-1:1)); }
   async function submit(e){e.preventDefault(); if(!body.trim()||!user)return; const {data,error}=await supabase.from('article_comments').insert({article_id:article.id,user_id:user.id,body:body.trim()}).select('*').single(); if(!error){setComments(v=>[...v,data]);setProfiles(v=>({...v,[user.id]:profile}));setBody('');}}
   async function remove(id){await supabase.from('article_comments').delete().eq('id',id);setComments(v=>v.filter(x=>x.id!==id));}
-  const canModerate=roleAtLeast(profile?.role,'moderator');
+  const canModerate=roleAtLeast(profile?.role,'admin');
   if(loading)return <section className="section article-page"><p className="muted">Đang tải bài viết…</p></section>;
   if(error)return <section className="section article-page"><h1>{error}</h1><Link className="text-link" to="/news">← Quay lại Tin tức</Link></section>;
   return <section className="section article-page"><Link className="back-link" to="/news"><ArrowLeft size={16}/> Tin tức</Link><div className="news-meta"><span>{article.tag}</span><time>{formatDate(article.published_at||article.created_at)}</time></div><h1>{article.title}</h1><p className="article-lead">{article.excerpt}</p><div className="article-body">{article.content.split(/\n\n+/).map((p,i)=><p key={i}>{p}</p>)}</div>

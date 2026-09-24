@@ -14,7 +14,7 @@ export default function ForumTopic(){
   async function submit(e){e.preventDefault();if(!user||!body.trim()||topic.locked)return;const {data,error}=await supabase.from('forum_replies').insert({topic_id:id,author_id:user.id,body:body.trim()}).select('*').single();if(!error){setReplies(v=>[...v,data]);setProfiles(v=>({...v,[user.id]:profile}));setBody('');}}
   async function removeReply(replyId){await supabase.from('forum_replies').delete().eq('id',replyId);setReplies(v=>v.filter(x=>x.id!==replyId));}
   async function removeTopic(){if(!confirm('Xóa chủ đề này?'))return;await supabase.from('forum_topics').delete().eq('id',id);window.location.href='/forum';}
-  const staff=roleAtLeast(profile?.role,'moderator');
+  const staff=roleAtLeast(profile?.role,'admin');
   if(loading)return <section className="section article-page"><p className="muted">Đang tải chủ đề…</p></section>;
   if(error)return <section className="section article-page"><h1>{error}</h1><Link className="text-link" to="/forum">← Quay lại diễn đàn</Link></section>;
   return <section className="section article-page forum-topic-page"><Link className="back-link" to="/forum"><ArrowLeft size={16}/> Diễn đàn</Link><div className="topic-flags"><span className="topic-category">{topic.category}</span>{topic.pinned&&<span><Pin size={12}/> Ghim</span>}{topic.locked&&<span><Lock size={12}/> Đã khóa</span>}</div><h1>{topic.title}</h1><p className="topic-author">Đăng bởi <b>{profiles[topic.author_id]?.display_name||'Corgi Member'}</b> · {formatDate(topic.created_at)} · {topic.views||0} lượt xem</p>

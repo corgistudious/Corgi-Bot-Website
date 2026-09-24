@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   FileText, LifeBuoy, MessagesSquare, Plus, RefreshCcw,
-  Send, ShieldCog, Terminal, Trash2, Users, X
+  Send, ShieldCog, Terminal, Trash2, X
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
@@ -13,16 +13,14 @@ const tabs = [
   ['tickets', 'Tickets', LifeBuoy],
   ['news', 'Tin tức', FileText],
   ['commands', 'Lệnh', Terminal],
-  ['users', 'Quyền', Users],
 ];
 
 const emptyArticle = { title: '', slug: '', tag: 'UPDATE', excerpt: '', content: '', status: 'draft' };
 const emptyCommand = { name: '', group_name: 'Khác', description: '', usage: '' };
 
 export default function Admin() {
-  const { user, profile, refreshProfile } = useAuth();
+  const { user, profile } = useAuth();
   const isAdmin = roleAtLeast(profile?.role, 'admin');
-  const isDev = profile?.role === 'developer';
 
   const [tab, setTab] = useState('forum');
   const [loading, setLoading] = useState(false);
@@ -31,7 +29,6 @@ export default function Admin() {
   const [tickets, setTickets] = useState([]);
   const [articles, setArticles] = useState([]);
   const [commands, setCommands] = useState([]);
-  const [users, setUsers] = useState([]);
 
   const [articleForm, setArticleForm] = useState(emptyArticle);
   const [editingArticleId, setEditingArticleId] = useState(null);
@@ -44,9 +41,8 @@ export default function Admin() {
 
   const allowedTabs = useMemo(
     () => tabs
-      .filter(([key]) => !['news', 'commands'].includes(key) || isAdmin)
-      .filter(([key]) => key !== 'users' || isDev),
-    [isAdmin, isDev]
+      .filter(([key]) => !['news', 'commands'].includes(key) || isAdmin),
+    [isAdmin]
   );
 
   async function load() {
@@ -89,15 +85,6 @@ export default function Admin() {
         setCommands(data || []);
       }
 
-      if (tab === 'users' && isDev) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('id,display_name,username,avatar_url,role,discord_id,created_at')
-          .order('created_at', { ascending: false })
-          .limit(200);
-        if (error) throw error;
-        setUsers(data || []);
-      }
     } catch (error) {
       setNotice(error.message);
     }
@@ -234,14 +221,6 @@ export default function Admin() {
     if (error) setNotice(error.message); else load();
   }
 
-  async function setRole(id, role) {
-    const { error } = await supabase.rpc('admin_set_profile_role', { p_user_id: id, p_role: role });
-    if (error) setNotice(error.message);
-    else {
-      if (id === profile.id) await refreshProfile();
-      load();
-    }
-  }
 
   return (
     <section className="section page-section admin-page">
@@ -391,16 +370,6 @@ export default function Admin() {
         </>
       )}
 
-      {tab === 'users' && isDev && (
-        <div className="admin-list">
-          {users.map((member) => (
-            <article className="admin-row" key={member.id}>
-              <div><span className="topic-category">{member.discord_id || 'Discord'}</span><h3>{member.display_name}</h3><p>{member.username || ''} · {formatDate(member.created_at)}</p></div>
-              <div className="admin-actions"><select value={member.role} onChange={(event) => setRole(member.id, event.target.value)}><option>member</option><option>moderator</option><option>admin</option><option>developer</option></select></div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
+   </section>
   );
 }
