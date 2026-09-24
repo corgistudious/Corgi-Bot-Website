@@ -18,7 +18,7 @@ export async function profileMap(ids=[]) {
   return Object.fromEntries((data || []).map(p => [p.id, p]));
 }
 
-export function roleAtLeast(role, need='moderator') {
-  const rank = { member:0, moderator:1, admin:2, developer:3 };
+export function roleAtLeast(role, need='reviewer') {
+  const rank = { member:0, reviewer:1, admin:2, developer:3 };
   return (rank[role] ?? 0) >= (rank[need] ?? 99);
 }

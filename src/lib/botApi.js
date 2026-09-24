@@ -28,6 +28,7 @@ async function request(path, { token, method = 'GET', body, redirect = 'follow' 
 
 export const botApi = {
   health: () => request('/health'),
+  me: (token) => request('/v1/me', { token }),
   shop: () => request('/v1/shop'),
   marketplace: () => request('/v1/marketplace'),
   marketplaceBuy: (id, token) => request(`/v1/marketplace/${id}/buy`, { method: 'POST', token }),
