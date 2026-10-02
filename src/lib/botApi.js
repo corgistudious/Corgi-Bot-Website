@@ -61,11 +61,10 @@ export const botApi = {
   eventShop: (token) => request('/v1/event-shop', { token }),
   eventShopExchange: (id, token) => request(`/v1/event-shop/${id}/exchange`, { method:'POST', token }),
   eventTicketBuy: (quantity, token) => request('/v1/event-shop/tickets/buy', { method:'POST', token, body:{quantity} }),
+  eventSpin: (token) => request('/v1/event-shop/spin', { method:'POST', token }),
   mailbox: (token) => request('/v1/mailbox', { token }),
   mailboxRead: (id, token) => request(`/v1/mailbox/${id}/read`, { method:'POST', token }),
   mailboxClaim: (id, token) => request(`/v1/mailbox/${id}/claim`, { method:'POST', token }),
   mailboxClaimAll: (token) => request('/v1/mailbox/claim-all', { method:'POST', token }),
-  developerConfig: (token) => request('/v1/developer/config', { token }),
-  updateDeveloperConfig: (data, token) => request('/v1/developer/config', { method:'PATCH', token, body:data }),
   clickUrl: (id) => `${API_BASE}/v1/ads/${id}/click`,
 };
