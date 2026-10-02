@@ -157,3 +157,5 @@ body{background:radial-gradient(circle at 12% 0%,rgba(255,148,24,.18),transparen
  .ticket-booth{grid-template-columns:52px minmax(0,1fr)!important;padding:14px;gap:10px}
  .ticket-booth img{width:52px;height:52px}.ticket-booth>strong,.ticket-booth>.btn{grid-column:1/-1!important}
 }
+
+.web-spin-wheel{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:54px;border:6px solid rgba(245,158,11,.55);box-shadow:0 0 28px rgba(245,158,11,.18);background:radial-gradient(circle,rgba(245,158,11,.18),rgba(20,15,8,.92))}.spin-wheel-card{align-items:center}.spin-wheel-card .btn{white-space:nowrap}@media(max-width:700px){.web-spin-wheel{width:76px;height:76px;font-size:42px}}
