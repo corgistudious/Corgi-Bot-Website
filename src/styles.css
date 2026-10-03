@@ -188,15 +188,27 @@ body{background:radial-gradient(circle at 12% 0%,rgba(255,148,24,.18),transparen
 @media(max-width:700px){.premium-spin .spin-hero{padding:16px 4px 14px}.premium-spin .spin-stage{padding:25px 10px 20px;border-radius:24px}.premium-spin .reward-wheel{width:min(84vw,340px);height:min(84vw,340px);border-width:8px}.premium-spin .wheel-reward{width:45px;height:52px}.premium-spin .wheel-reward img{width:33px;height:33px}.premium-spin .wheel-reward span{font-size:25px}.premium-spin .wheel-reward small{font-size:10px}.premium-spin .reward-wheel .wheel-core{width:88px;height:88px}.premium-spin .reward-wheel .wheel-core img{width:39px;height:39px}.premium-spin .reward-legend{grid-template-columns:1fr 1fr}.premium-spin .reward-legend>div{grid-template-columns:30px 1fr auto;padding:8px}.premium-spin .reward-legend img{width:27px;height:27px}.premium-spin .reward-legend b{font-size:11px}.premium-spin .spin-ticket-balance img{width:52px}.premium-spin .spin-main-btn{font-size:17px;min-width:220px}}
 
 
-/* V10.2.10 automatic seasonal Spin skin */
-.premium-spin .spin-stage{isolation:isolate;overflow:visible}
-.premium-spin .spin-stage>*{position:relative;z-index:2}
-.premium-spin .spin-stage .spin-aura{position:absolute;z-index:0}
-.premium-spin .spin-season-art{position:absolute;z-index:1;left:50%;top:46%;transform:translate(-50%,-50%);width:min(94vw,560px);aspect-ratio:1/1;background-position:center;background-repeat:no-repeat;background-size:contain;pointer-events:none;filter:drop-shadow(0 18px 35px rgba(0,0,0,.48));opacity:.9}
-.premium-spin .wheel-shell{z-index:3}
-.premium-spin .spin-main-btn,.premium-spin .reward-legend{z-index:4}
-.premium-spin .spin-season-halloween{background:radial-gradient(circle at 50% 36%,rgba(126,34,206,.18),transparent 40%),linear-gradient(180deg,#140b18,#080708 86%)}
-.premium-spin .spin-season-christmas{background:radial-gradient(circle at 50% 36%,rgba(220,38,38,.13),transparent 38%),linear-gradient(180deg,#0b1712,#080908 86%)}
-.premium-spin .spin-season-new-year{background:radial-gradient(circle at 50% 36%,rgba(245,158,11,.18),transparent 40%),linear-gradient(180deg,#1b0d08,#090807 86%)}
-.premium-spin .spin-season-summer{background:radial-gradient(circle at 50% 36%,rgba(14,165,233,.16),transparent 40%),linear-gradient(180deg,#07171b,#080a09 86%)}
-@media(max-width:700px){.premium-spin .spin-season-art{width:min(108vw,430px);top:43%;opacity:.88}}
+/* V10.2.11 unified seasonal Spin skin */
+.premium-spin{--spin-accent:#f6c453;--spin-accent2:#d97800;--spin-panel:#100d08;--spin-panel2:#080808;--spin-line:rgba(246,196,83,.20);--spin-glow:rgba(245,158,11,.18);--spin-text:#fff7e6;--spin-muted:#c8b99d}
+.premium-spin .spin-stage{isolation:isolate;overflow:hidden;background:radial-gradient(circle at 50% 32%,var(--spin-glow),transparent 40%),linear-gradient(180deg,var(--spin-panel),var(--spin-panel2) 88%);border-color:var(--spin-line);box-shadow:0 28px 80px rgba(0,0,0,.38),inset 0 1px rgba(255,255,255,.04)}
+.premium-spin .spin-stage>*{position:relative;z-index:2}.premium-spin .spin-stage .spin-aura{position:absolute;z-index:0;background:radial-gradient(circle,var(--spin-glow),transparent 68%)}
+.premium-spin .spin-season-art{position:absolute;z-index:1;left:50%;top:250px;transform:translate(-50%,-50%);width:min(94%,560px);height:560px;background-position:center;background-repeat:no-repeat;background-size:contain;pointer-events:none;filter:drop-shadow(0 18px 35px rgba(0,0,0,.46));opacity:.88}
+.premium-spin .wheel-shell{z-index:3}.premium-spin .spin-main-btn,.premium-spin .reward-legend{z-index:4}
+.premium-spin .reward-wheel{border-color:var(--spin-accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--spin-accent) 22%,transparent),0 0 38px var(--spin-glow),0 22px 52px rgba(0,0,0,.58)}
+.premium-spin .wheel-pointer{color:var(--spin-accent);filter:drop-shadow(0 0 9px var(--spin-glow))}
+.premium-spin .reward-wheel .wheel-core{border-color:var(--spin-accent);background:radial-gradient(circle at 50% 28%,color-mix(in srgb,var(--spin-accent) 18%,#161616),#080808 72%)}
+.premium-spin .spin-main-btn{background:linear-gradient(135deg,var(--spin-accent2),var(--spin-accent));color:#130d04;box-shadow:0 12px 32px var(--spin-glow);border-color:color-mix(in srgb,var(--spin-accent) 42%,transparent)}
+.premium-spin .reward-legend{padding:14px;border-radius:20px;background:color-mix(in srgb,var(--spin-panel) 88%,transparent);border:1px solid var(--spin-line);box-shadow:0 14px 35px rgba(0,0,0,.24)}
+.premium-spin .reward-legend>div{background:color-mix(in srgb,var(--spin-panel2) 84%,var(--spin-accent) 16%);border-color:var(--spin-line)}.premium-spin .reward-legend small{color:var(--spin-accent)}
+.premium-spin .spin-ticket-balance{border-color:var(--spin-line);background:linear-gradient(180deg,color-mix(in srgb,var(--spin-accent) 10%,transparent),rgba(255,255,255,.02));box-shadow:0 10px 35px var(--spin-glow)}
+.premium-spin .spin-hero .eyebrow{color:var(--spin-accent)}
+.premium-spin .vault-card,.premium-spin .dash-card{border-color:var(--spin-line);background:linear-gradient(180deg,color-mix(in srgb,var(--spin-panel) 94%,transparent),var(--spin-panel2))}
+
+.premium-spin .spin-season-halloween{--spin-accent:#ff9a3c;--spin-accent2:#7c3aed;--spin-panel:#1a0b20;--spin-panel2:#09060d;--spin-line:rgba(249,115,22,.34);--spin-glow:rgba(147,51,234,.28);--spin-muted:#d5b8df}
+.premium-spin .spin-season-christmas{--spin-accent:#f5c451;--spin-accent2:#b91c1c;--spin-panel:#0b1b13;--spin-panel2:#060b08;--spin-line:rgba(239,68,68,.30);--spin-glow:rgba(22,163,74,.25);--spin-muted:#bdd3c4}
+.premium-spin .spin-season-new-year{--spin-accent:#ffd166;--spin-accent2:#dc2626;--spin-panel:#250b08;--spin-panel2:#0d0504;--spin-line:rgba(251,191,36,.34);--spin-glow:rgba(220,38,38,.26);--spin-muted:#e0b6a2}
+.premium-spin .spin-season-summer{--spin-accent:#67e8f9;--spin-accent2:#0284c7;--spin-panel:#071d29;--spin-panel2:#041016;--spin-line:rgba(34,211,238,.32);--spin-glow:rgba(14,165,233,.27);--spin-muted:#b4dce5}
+
+/* The seasonal artwork belongs to the wheel zone only; the reward list is a themed UI surface, not part of the artwork. */
+.premium-spin .reward-legend{margin-top:12px}
+@media(max-width:700px){.premium-spin .spin-season-art{width:min(112vw,440px);height:440px;top:220px;opacity:.84}.premium-spin .reward-legend{padding:9px;border-radius:17px}}
