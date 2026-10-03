@@ -58,6 +58,7 @@ export const botApi = {
   clanUpdateResource: (id, resource, target, data, token) => request(`/v1/servers/${id}/clan/${resource}/${target}`, { method:'PATCH', token, body:data }),
   serverEvents: (id, kind, token) => request(`/v1/servers/${id}/${kind}`, { token }),
   createServerEvent: (id, kind, data, token) => request(`/v1/servers/${id}/${kind}`, { method:'POST', token, body:data }),
+  rankings: (token) => request('/v1/rankings?limit=100', { token }),
   eventShop: (token) => request('/v1/event-shop', { token }),
   eventShopExchange: (id, token) => request(`/v1/event-shop/${id}/exchange`, { method:'POST', token }),
   eventTicketBuy: (quantity, token) => request('/v1/event-shop/tickets/buy', { method:'POST', token, body:{quantity} }),
