@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {useAuth} from '../context/AuthContext';
 import {supabase} from '../lib/supabase';
 import {useI18n} from '../i18n/index.jsx';
-const roleLabel={member:'Member',reviewer:'Reviewer',admin:'Admin',developer:'Developer'};
+const roleLabel={member:'Member',reviewer:'Reviewer',admin:'Admin',developer:'Đội Ngũ Quản Trị'};
 const defaults={accent_color:'#ff9418',nameplate_border:'#ff9b1a',nameplate_text_color:'#ffd27a',nameplate_glow:true};
 export default function Profile(){const {locale}=useI18n();const vi=locale==='vi';const {user,profile,loading,signOut,refreshProfile}=useAuth();const [stats,setStats]=useState({topics:0,replies:0,comments:0,tickets:0});const [custom,setCustom]=useState(defaults);const [saving,setSaving]=useState(false);const [notice,setNotice]=useState('');
 useEffect(()=>{if(!user||!supabase)return;(async()=>{const rs=await Promise.all([supabase.from('forum_topics').select('*',{count:'exact',head:true}).eq('author_id',user.id),supabase.from('forum_replies').select('*',{count:'exact',head:true}).eq('author_id',user.id),supabase.from('article_comments').select('*',{count:'exact',head:true}).eq('user_id',user.id),supabase.from('support_tickets').select('*',{count:'exact',head:true}).eq('user_id',user.id)]);setStats({topics:rs[0].count||0,replies:rs[1].count||0,comments:rs[2].count||0,tickets:rs[3].count||0});})();},[user?.id]);

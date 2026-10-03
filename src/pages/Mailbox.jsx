@@ -3,7 +3,16 @@ import { CheckCheck, Gift, Inbox, Mail, RefreshCw } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { botApi, botApiConfigured } from '../lib/botApi';
 
-function rewardText(r){if(!r)return '';if(typeof r==='string')return r;const labels={cxu:'CXu',redFragments:'Mảnh Ghép Đỏ',prismaticFragments:'Mảnh Ngũ Sắc',purpleDiamonds:'Kim Cương Tím',contributionPoints:'Điểm Cống Hiến',eventTickets:'Vé Sự Kiện'};return Object.entries(r).filter(([,v])=>Number(v)>0).map(([k,v])=>`${labels[k]||k}: ${Number(v).toLocaleString()}`).join(' • ')||'Không có vật phẩm';}
+const rewardMeta={
+  cxu:{label:'CXu',img:'/assets/event/cxu.png'},
+  redFragments:{label:'Mảnh Ghép Đỏ',img:'/assets/event/red-fragment.png'},
+  prismaticFragments:{label:'Mảnh Ngũ Sắc',img:'/assets/event/prismatic-fragment.png'},
+  contributionPoints:{label:'Điểm Cống Hiến',img:'/assets/event/purple-diamond.png'},
+  luckyTickets:{label:'Vé Quay Thưởng',img:'/assets/event/lucky-ticket.png'},
+  eventTickets:{label:'Vé Sự Kiện',img:'/assets/event/event-ticket.png'},
+};
+function rewardEntries(r){if(!r||typeof r==='string')return [];return Object.entries(r).filter(([,v])=>Number(v)>0).map(([k,v])=>({key:k,value:Number(v),...(rewardMeta[k]||{label:k})}));}
+function rewardText(r){if(!r)return '';if(typeof r==='string')return r;const entries=rewardEntries(r);return entries.map(x=>`${x.label}: ${x.value.toLocaleString()}`).join(' • ')||'Không có vật phẩm';}
 function fmtDate(value){
   if(!value) return '';
   try{return new Intl.DateTimeFormat(undefined,{dateStyle:'medium',timeStyle:'short'}).format(new Date(value));}catch{return String(value);}
@@ -48,11 +57,11 @@ export default function Mailbox(){
     {!botApiConfigured&&<div className="notice warning">Mailbox UI đã sẵn sàng. Cần cấu hình VITE_CORGI_API_URL và API mailbox để đồng bộ dữ liệu thật.</div>}
     {error&&<div className="notice danger">{error}</div>}
     <div className="mail-list">
-      {!loading&&!mails.length&&<div className="panel empty-state"><Inbox size={40}/><h2>Chưa có thư</h2><p>Khi hệ thống hoặc Developer gửi thư, nội dung sẽ xuất hiện tại đây.</p></div>}
+      {!loading&&!mails.length&&<div className="panel empty-state"><Inbox size={40}/><h2>Chưa có thư</h2><p>Khi hệ thống hoặc Đội Ngũ Quản Trị gửi thư, nội dung sẽ xuất hiện tại đây.</p></div>}
       {mails.map((m,idx)=>{const id=m.id||m._id||String(idx); const read=Boolean(m.readAt||m.read); const claimed=Boolean(m.claimedAt||m.claimed); const reward=m.reward||m.rewards||m.attachments; return <article key={id} className={`panel mail-card ${read?'':'unread'}`}>
         <div className="mail-card-head"><div><span className="mail-sender">{m.senderName||m.sender||'Corgi-Bot'}</span><h2>{m.title||'Thông báo hệ thống'}</h2></div><span className="mail-date">{fmtDate(m.createdAt||m.created_at)}</span></div>
         <p className="mail-body">{m.content||m.message||m.body||'—'}</p>
-        {reward&&<div className="mail-reward"><Gift size={18}/><div><strong>Phần thưởng đính kèm</strong><span>{rewardText(reward)}</span></div></div>}
+        {reward&&<div className="mail-reward"><Gift size={18}/><div><strong>Phần thưởng đính kèm</strong>{rewardEntries(reward).length?<div className="mail-resource-list">{rewardEntries(reward).map(x=><span className="mail-resource-chip" key={x.key}>{x.img&&<img src={x.img} alt=""/>}<b>{x.value.toLocaleString()}</b> {x.label}</span>)}</div>:<span>{rewardText(reward)}</span>}</div></div>}
         <div className="mail-actions">{!read&&<button className="btn secondary" disabled={busy===`read:${id}`} onClick={()=>readMail(id)}>Đánh dấu đã đọc</button>}{reward&&!claimed&&<button className="btn primary" disabled={busy===`claim:${id}`} onClick={()=>claim(id)}><Gift size={16}/> Nhận thưởng</button>}{claimed&&<span className="claimed"><CheckCheck size={16}/> Đã nhận</span>}</div>
       </article>})}
     </div>
