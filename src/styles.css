@@ -218,48 +218,70 @@ body{background:radial-gradient(circle at 12% 0%,rgba(255,148,24,.18),transparen
 .premium-spin .reward-wheel .wheel-core img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 7px rgba(0,0,0,.55))}
 @media(max-width:700px){.premium-spin .reward-wheel .wheel-core{padding:6px}.premium-spin .reward-wheel .wheel-core img{width:100%;height:100%}}
 
-/* V10.2.13 — balanced responsive system: phone / tablet / desktop / 2K */
-@media (min-width: 1024px){
-  .section,.footer{width:min(1320px,calc(100% - 64px))}
-  .page-section{padding-top:64px}
-  .topbar{height:82px;padding-inline:clamp(24px,2.6vw,52px);gap:18px}
-  .brand{flex:0 0 auto;min-width:142px;gap:10px}.brand-mark{width:42px;height:42px}.brand strong{font-size:16px;white-space:nowrap}.brand span{font-size:9px;white-space:nowrap}
-  .nav{flex:1;justify-content:flex-end;gap:2px;min-width:0}.nav>a{padding:9px 8px;font-size:12px;line-height:1.2;text-align:center}.nav .invite-small{margin-left:2px}
-  .hero{min-height:620px;grid-template-columns:minmax(0,1.12fr) minmax(360px,.88fr);gap:clamp(48px,5vw,86px);padding:72px 0 82px}
-  .hero h1{font-size:clamp(58px,5vw,78px);max-width:780px}.hero-copy>p{max-width:760px}.hero-panel{min-height:430px;padding:42px}
-  .feature-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.feature-card{padding:28px}
-  .community-grid,.news-grid,.market-grid,.event-grid,.chest-grid{gap:18px}
-  .callout{padding:42px 46px}
-  .rankings-page,.spin-page{max-width:1320px}
-  .premium-spin .spin-stage{max-width:920px}.premium-spin .vault-section,.premium-spin .spin-notice{max-width:920px}
+/* V10.2.14 — global page-frame + desktop navigation repair */
+/* Every routed page gets the same centered content frame. Previously many pages
+   used .page-section without .section, which made them stretch from x=0 on PC. */
+.page-section{
+  width:min(1180px,calc(100% - 44px));
+  margin-left:auto;
+  margin-right:auto;
 }
-@media (min-width: 1280px){
-  .section,.footer{width:min(1440px,calc(100% - 80px))}
-  .topbar{padding-inline:clamp(28px,2.8vw,64px)}
-  .brand{min-width:158px}.brand-mark{width:44px;height:44px}.brand strong{font-size:17px}.brand span{font-size:9.5px}
-  .nav{gap:4px}.nav>a{padding:10px 9px;font-size:12.5px}
-  .hero{grid-template-columns:minmax(0,1.18fr) minmax(420px,.82fr);gap:clamp(64px,6vw,110px);padding:84px 0 96px}
-  .hero-panel{min-height:460px;max-width:560px;width:100%;justify-self:end}.bot-orb{width:164px;height:164px}
-  .section-heading{margin-top:52px}.feature-grid{grid-template-columns:repeat(3,1fr);gap:20px}
-  .command-grid,.support-grid{gap:20px}
-  .premium-spin .spin-stage{max-width:1040px;padding-inline:46px}.premium-spin .reward-legend{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .rankings-page{max-width:1360px}.podium{gap:20px}.podium-card{padding:28px 18px}
+
+@media (min-width:1024px){
+  .page-section{width:min(1320px,calc(100% - 64px));padding-top:64px}
+  .page-section>h1,.page-section>.page-hero,.page-section>.section-head{max-width:100%}
+  .event-shop-page,.market-page,.rankings-page,.spin-page,.dashboard-page,.guide-page{margin-left:auto;margin-right:auto}
+  .economy-stats,.event-grid,.market-grid,.chest-grid,.dashboard-grid{width:100%;min-width:0}
+  .footer{margin-left:auto;margin-right:auto}
 }
-@media (min-width: 1500px){
-  .section,.footer{width:min(1480px,calc(100% - 112px))}
-  .topbar{padding-inline:max(40px,calc((100vw - 1540px)/2));gap:24px}
-  .brand{min-width:170px}.nav{gap:6px}.nav>a{font-size:13px;padding:10px 11px}
-  .hero{min-height:650px;grid-template-columns:minmax(0,1.15fr) minmax(460px,.85fr);gap:110px}.hero h1{font-size:82px}.hero-copy>p{font-size:19px}.hero-panel{max-width:590px;min-height:480px}
-  .feature-card{padding:30px}.section-heading h2{font-size:58px}
+@media (min-width:1280px){
+  .page-section{width:min(1400px,calc(100% - 80px))}
 }
-@media (min-width: 1800px){
-  .section,.footer{width:min(1540px,calc(100% - 144px))}
-  .topbar{padding-inline:max(48px,calc((100vw - 1620px)/2))}.brand{min-width:178px}.nav>a{font-size:13.5px;padding-inline:12px}
-  .hero{grid-template-columns:minmax(0,1.2fr) 560px;gap:128px}.hero h1{font-size:88px}.hero-panel{max-width:600px}
+@media (min-width:1600px){
+  .page-section{width:min(1480px,calc(100% - 112px))}
 }
-/* Tablet bridge: keep navigation usable and content proportional. */
-@media (min-width: 851px) and (max-width: 1023px){
-  .section,.footer{width:calc(100% - 48px)}.topbar{padding:0 22px}.brand{min-width:138px}.nav{gap:1px}.nav>a{font-size:11px;padding:8px 6px}.hero{gap:38px;grid-template-columns:1.05fr .95fr}.hero h1{font-size:54px}.hero-panel{padding:28px}
+@media (min-width:1900px){
+  .page-section{width:min(1540px,calc(100% - 144px))}
 }
-/* Never let wide content create horizontal scrolling. */
-.site-shell,.page-section,.section{min-width:0}.hero>* ,.feature-grid>* ,.community-grid>* ,.market-grid>* ,.event-grid>*{min-width:0}img{max-width:100%}
+
+/* Full desktop navigation: keep the brand isolated and stop labels colliding. */
+@media (min-width:1551px){
+  .topbar{height:76px;padding-inline:max(22px,calc((100vw - 1600px)/2));gap:14px}
+  .brand{min-width:132px;max-width:132px;flex:0 0 132px;gap:8px;overflow:hidden}
+  .brand-mark{width:38px;height:38px;flex:0 0 38px;border-radius:11px}
+  .brand strong{font-size:14px;line-height:1.05;white-space:nowrap}
+  .brand span{font-size:7.5px;letter-spacing:.12em;white-space:nowrap}
+  .nav{display:flex;flex:1 1 auto;min-width:0;justify-content:flex-end;gap:1px;overflow:visible}
+  .nav>a{flex:0 0 auto;gap:4px;padding:8px 6px;font-size:10.5px;line-height:1.15;white-space:nowrap;text-align:center}
+  .nav>a svg{width:13px;height:13px;flex:0 0 13px}
+  .nav .invite-small{margin-left:3px;padding-inline:10px}
+  .language-picker{flex:0 0 auto;padding:7px 8px;gap:4px}
+  .language-picker select{font-size:10.5px;max-width:94px}
+  .menu-btn{display:none}
+}
+@media (min-width:1800px){
+  .topbar{padding-inline:max(28px,calc((100vw - 1680px)/2));gap:16px}
+  .brand{min-width:142px;max-width:142px;flex-basis:142px}.brand strong{font-size:15px}.brand span{font-size:8px}
+  .nav{gap:2px}.nav>a{font-size:11px;padding-inline:7px}
+}
+
+/* On normal laptops there is not enough honest space for 15+ primary links.
+   Use the existing menu drawer instead of crushing the navigation. */
+@media (min-width:851px) and (max-width:1550px){
+  .topbar{height:74px;padding:0 24px;gap:16px}
+  .brand{min-width:0;max-width:none;flex:0 0 auto}.brand strong{font-size:16px}.brand span{font-size:9px}
+  .menu-btn{display:block;margin-left:auto}
+  .nav{display:none;position:absolute;left:auto;right:24px;top:66px;width:min(420px,calc(100vw - 48px));max-height:calc(100vh - 90px);overflow:auto;flex-direction:column;align-items:stretch;padding:12px;background:rgba(13,10,7,.98);border:1px solid rgba(255,157,22,.2);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.48)}
+  .nav.open{display:flex}
+  .nav>a{font-size:13px;padding:11px 12px;text-align:left;white-space:normal}
+  .nav .invite-small{margin-left:0}
+  .language-picker{width:100%;justify-content:space-between}
+}
+
+/* Phone/tablet keeps comfortable gutters even for pages with page-specific max-width. */
+@media (max-width:850px){
+  .page-section{width:min(100% - 28px,1180px);padding-top:48px}
+}
+@media (max-width:560px){
+  .page-section{width:calc(100% - 28px);padding-top:38px;padding-bottom:78px}
+}
