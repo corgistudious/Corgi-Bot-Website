@@ -344,3 +344,70 @@ main>.page-wrap{padding-top:clamp(42px,4vw,72px);padding-bottom:clamp(72px,7vw,1
   main>.page,main>.page-wrap,.event-shop-page,.rankings-page,.spin-page,.dashboard-page{width:calc(100% - 28px)}
   main>.page{padding-top:38px;padding-bottom:76px}
 }
+
+/* V10.2.16 — compact route rhythm + richer Corgi ambient background */
+/* MarketHub is a navigation header, not a full viewport page. The global .page
+   min-height made the tab header consume almost an entire screen on desktop. */
+main>.market-hub-head{
+  min-height:0!important;
+  padding-top:clamp(28px,3vw,48px)!important;
+  padding-bottom:clamp(24px,2.6vw,42px)!important;
+  margin-bottom:clamp(24px,3vw,48px)!important;
+}
+.market-hub-head h1{margin-bottom:12px}
+.market-hub-head p{margin-bottom:18px}
+.market-hub-head .dash-tabs{margin-top:16px;margin-bottom:0}
+
+/* Remove other accidental viewport-sized header shells without changing real
+   full pages. */
+main>.page.market-hub-head + .page,
+main>.page.market-hub-head + .page-wrap{
+  padding-top:clamp(18px,2vw,32px);
+}
+
+/* Warm layered background: subtle enough for content, richer than a flat fill. */
+body{
+  background:
+    radial-gradient(ellipse 62% 46% at 12% 8%,rgba(255,151,28,.115),transparent 68%),
+    radial-gradient(ellipse 48% 38% at 88% 18%,rgba(255,188,75,.055),transparent 72%),
+    radial-gradient(ellipse 54% 42% at 52% 72%,rgba(116,57,12,.085),transparent 72%),
+    linear-gradient(145deg,#0a0704 0%,#0e0a06 34%,#080705 68%,#050504 100%)!important;
+  background-attachment:fixed;
+}
+.site-shell{position:relative;isolation:isolate;background:transparent}
+.site-shell:before{
+  content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;
+  background:
+    linear-gradient(rgba(255,184,79,.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,184,79,.012) 1px,transparent 1px);
+  background-size:54px 54px;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.72),transparent 82%);
+}
+main{position:relative}
+main:before{
+  content:"";position:absolute;pointer-events:none;z-index:-1;
+  width:min(70vw,1050px);height:420px;left:50%;top:40px;transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(255,144,20,.055),transparent 70%);
+  filter:blur(10px);
+}
+
+/* Give routed surfaces a little separation from the ambient background. */
+.dash-card,.market-card,.event-product,.ticket-booth,.rank-list>article,.vault-card,
+.panel-form,.ticket-thread,.ticket-list,.support-card,.feature-card,.command-card{
+  box-shadow:inset 0 1px rgba(255,255,255,.025),0 12px 34px rgba(0,0,0,.10);
+}
+
+@media (min-width:851px){
+  /* Keep normal route starts compact on desktop; only true landing heroes should
+     intentionally occupy a viewport. */
+  main>.market-hub-head{width:min(var(--site-content-max),calc(100% - (var(--site-gutter) * 2)))}
+}
+@media (max-width:850px){
+  main>.market-hub-head{
+    padding-top:30px!important;padding-bottom:24px!important;margin-bottom:24px!important;
+  }
+  body{background-attachment:scroll}
+}
+@media (max-width:560px){
+  main>.market-hub-head{padding-top:24px!important;padding-bottom:18px!important;margin-bottom:18px!important}
+}
