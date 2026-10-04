@@ -285,3 +285,62 @@ body{background:radial-gradient(circle at 12% 0%,rgba(255,148,24,.18),transparen
 @media (max-width:560px){
   .page-section{width:calc(100% - 28px);padding-top:38px;padding-bottom:78px}
 }
+
+/* V10.2.15 — real routed-page frame repair
+   A large set of V10 pages use .page / .page-wrap rather than .section.page-section.
+   Center those actual route roots instead of trying to infer page-specific classes. */
+:root{--site-content-max:1440px;--site-gutter:clamp(18px,3vw,56px)}
+main{width:100%;min-width:0}
+main>.page,
+main>.page-wrap{
+  width:min(var(--site-content-max),calc(100% - (var(--site-gutter) * 2)));
+  margin-left:auto;
+  margin-right:auto;
+  min-width:0;
+  box-sizing:border-box;
+}
+main>.page{min-height:calc(100vh - 160px);padding-top:clamp(42px,4vw,72px);padding-bottom:clamp(72px,7vw,112px)}
+main>.page-wrap{padding-top:clamp(42px,4vw,72px);padding-bottom:clamp(72px,7vw,112px)}
+
+/* Nested hub pages must share one horizontal axis. */
+.market-hub-head{padding-bottom:22px!important}
+.event-shop-page,.rankings-page,.spin-page,.dashboard-page{width:min(var(--site-content-max),calc(100% - (var(--site-gutter) * 2)));max-width:none}
+.event-wallet,.event-action-row,.event-product-grid,.rank-list,.vault-grid{min-width:0}
+.event-wallet>* ,.event-action-row>* ,.event-product-grid>*{min-width:0}
+
+/* Wide desktop cards should use space without becoming edge-to-edge banners. */
+@media (min-width:1200px){
+  .event-wallet{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .event-action-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .event-product-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .market-hub-head .dash-tabs{max-width:520px}
+}
+@media (min-width:1700px){
+  :root{--site-content-max:1480px;--site-gutter:64px}
+}
+
+/* 15+ navigation destinations do not belong in one row on ordinary desktop.
+   Use the existing drawer until there is genuinely enough width. */
+@media (min-width:851px) and (max-width:2199px){
+  .topbar{height:76px;padding-inline:max(24px,calc((100vw - 1480px)/2));gap:18px}
+  .brand{min-width:180px;max-width:none;flex:0 0 auto;overflow:visible}
+  .brand-mark{width:42px;height:42px;flex:0 0 42px}
+  .brand strong{font-size:16px;white-space:nowrap}.brand span{font-size:9px;white-space:nowrap}
+  .menu-btn{display:block;margin-left:auto;cursor:pointer}
+  .nav{display:none;position:absolute;right:max(24px,calc((100vw - 1480px)/2));top:68px;width:min(430px,calc(100vw - 48px));max-height:calc(100vh - 92px);overflow:auto;flex-direction:column;align-items:stretch;padding:12px;background:rgba(13,10,7,.985);border:1px solid rgba(255,157,22,.22);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.52)}
+  .nav.open{display:flex}
+  .nav>a{font-size:13px;padding:11px 12px;text-align:left;white-space:normal}
+  .nav .invite-small{margin-left:0}.language-picker{width:100%;justify-content:space-between}
+}
+@media (min-width:2200px){
+  .topbar{padding-inline:max(28px,calc((100vw - 1840px)/2))}
+  .brand{min-width:170px;max-width:170px;flex-basis:170px;overflow:visible}
+  .brand strong{font-size:16px}.brand span{font-size:8px}
+  .nav>a{font-size:11px;padding-inline:7px}
+}
+
+@media (max-width:850px){
+  :root{--site-gutter:14px}
+  main>.page,main>.page-wrap,.event-shop-page,.rankings-page,.spin-page,.dashboard-page{width:calc(100% - 28px)}
+  main>.page{padding-top:38px;padding-bottom:76px}
+}
