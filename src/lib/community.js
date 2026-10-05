@@ -19,6 +19,6 @@ export async function profileMap(ids=[]) {
 }
 
 export function roleAtLeast(role, need='reviewer') {
-  const rank = { member:0, reviewer:1, admin:2, developer:3 };
+  const rank = { member:0, reviewer:1, admin:3, developer:3 };
   return (rank[role] ?? 0) >= (rank[need] ?? 99);
 }
