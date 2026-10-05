@@ -1,6 +1,6 @@
 import AdSlot from '../components/AdSlot';
 import {useEffect,useState} from 'react';
-import {Brain,Building2,Fish,Gamepad2,PawPrint,ShieldCheck,Sparkles,TicketCheck,Trophy} from 'lucide-react';
+import {Brain,Building2,Fish,PawPrint,ShieldCheck,Sparkles,TicketCheck,Trophy} from 'lucide-react';
 import {Link} from 'react-router-dom';
 import {supabase} from '../lib/supabase';
 import {formatDate} from '../lib/community';
@@ -12,7 +12,6 @@ const featureData=[
  ['Pet Hunt','Pet Hunt','25 Pet trong Dex: 19 Pet săn được, 5 Pet đặc biệt và 1 Pet sự kiện.','25 pets in the Dex: 19 huntable, 5 special and 1 event pet.',PawPrint],
  ['Startup','Startup','Mô phỏng công ty với nhân sự, thương hiệu, tín dụng, định giá và IPO.','Company simulation with staff, brand, credit, valuation and IPO.',Building2],
  ['Fishing','Câu cá','Câu cá, nâng cấp trang bị và cạnh tranh bảng xếp hạng.','Fishing, equipment upgrades and leaderboard competition.',Fish],
- ['Game Hub','Game Hub','Liêng, Poker, Lottery, Spin và các hệ thống game trong /game.','Liêng, Poker, Lottery, Spin and game systems inside /game.',Gamepad2],
  ['Community','Cộng đồng','Event, Clan, Creator, Marketplace, News, Forum và Mailbox.','Events, Clan, Creator, Marketplace, News, Forum and Mailbox.',Trophy],
  ['AI Chat','AI Chat','Trợ lý AI tích hợp cho thành viên Discord.','Integrated AI assistant for Discord members.',Brain],
  ['Ticket & Support','Ticket & Hỗ trợ','Ticket Discord kết hợp Support Center trên website.','Discord tickets connected with the website Support Center.',TicketCheck],
