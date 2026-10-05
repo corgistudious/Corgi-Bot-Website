@@ -6,7 +6,7 @@ import { botApi, botApiConfigured } from '../lib/botApi';
 import { ErrorState, LoadingState } from '../components/ApiState';
 import { useI18n } from '../i18n/index.jsx';
 import { compactNumber } from '../lib/numberFormat';
-const placements={HOME:'Home',TRENDING:'Trending',VOTE:'Vote',GAME_HUB:'Game Hub',MARKETPLACE:'Marketplace',LEADERBOARD:'Leaderboard',PROFILE:'Profile',NEWS_FORUM:'News & Forum',NETWORK:'Network'};const n=compactNumber;const dayPresets=[1,3,7,30];
+const placements={HOME:'Home',MARKETPLACE:'Marketplace',LEADERBOARD:'Leaderboard',PROFILE:'Profile',NEWS_FORUM:'News & Forum'};const n=compactNumber;const dayPresets=[1,3,7,30];
 export default function Ads(){const {locale}=useI18n(),vi=locale==='vi';const {user,session}=useAuth(),token=session?.access_token;const [items,setItems]=useState([]),[market,setMarket]=useState([]),[analytics,setAnalytics]=useState(null),[selected,setSelected]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');const [form,setForm]=useState({marketplaceListingId:'',description:'',placement:'HOME',days:'7',budget:''});
  const days=Math.max(1,Number(form.days||1)),budget=Math.max(0,Number(form.budget||0)),daily=budget/days;const chosen=useMemo(()=>market.find(x=>x._id===form.marketplaceListingId),[market,form.marketplaceListingId]);
  async function load(){if(!token)return;setError('');try{const [a,m]=await Promise.all([botApi.adsMine(token),botApi.marketplaceMineApproved(token)]);setItems(a?.items||[]);setMarket(m?.items||[])}catch(e){setError(e)}}useEffect(()=>{load()},[token]);
