@@ -54,6 +54,7 @@ export const botApi = {
   adCancel: (id, token) => request(`/v1/ads/${id}/cancel`, { method: 'POST', token }),
   adAnalytics: (id, token) => request(`/v1/ads/${id}/analytics`, { token }),
   adImpression: (id) => request(`/v1/ads/${id}/impression`, { method: 'POST' }),
+  adClick: (id) => fetch(`${API_BASE}/v1/ads/${id}/click`, { method:'GET', mode:'no-cors', redirect:'manual', keepalive:true }),
   servers: (token) => request('/v1/servers', { token }),
   serverContext: (id, token) => request(`/v1/servers/${id}/context`, { token }),
   serverConfig: (id, token) => request(`/v1/servers/${id}/config`, { token }),
