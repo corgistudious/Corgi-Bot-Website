@@ -36,6 +36,7 @@ export const botApi = {
   profileGiftSend: (id, key, message, token) => request(`/v1/profile/${id}/gifts/${encodeURIComponent(key)}/send`, { method:'POST', token, body:{message} }),
   profileGuestbook: (id, message, token) => request(`/v1/profile/${id}/guestbook`, { method:'POST', token, body:{message} }),
   marketplace: () => request('/v1/marketplace'),
+  marketplaceMineApproved: (token) => request('/v1/marketplace/mine-approved', { token }),
   marketplaceBuy: (id, token) => request(`/v1/marketplace/${id}/buy`, { method: 'POST', token }),
   marketplaceSubmit: (data, token) => request('/v1/marketplace/submit', { method: 'POST', token, body: data }),
   creatorMine: (token) => request('/v1/marketplace/creator/mine', { token }),
