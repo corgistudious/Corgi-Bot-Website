@@ -5,7 +5,7 @@ import {useAuth} from '../context/AuthContext';
 import {botApi} from '../lib/botApi';
 const tabs=[['red','Mảnh Ghép Đỏ','/assets/event/red-fragment.png'],['prismatic','Mảnh Ngũ Sắc','/assets/event/prismatic-fragment.png'],['contribution','Điểm Cống Hiến','/assets/event/purple-diamond.png'],['cxu','CXu','/assets/event/cxu.png'],['eventTicket','Vé Sự Kiện','/assets/event/event-ticket.png']];
 const chests=[['bronze','Rương Đồng',1,10000,'/assets/event/chest-bronze.png'],['silver','Rương Bạc',2,100000,'/assets/event/chest-silver.png'],['gold','Rương Vàng',3,1000000,'/assets/event/chest-gold.png'],['diamond','Rương Kim Cương',5,10000000,'/assets/event/chest-diamond.png'],['legendary','Rương Huyền Thoại',7,100000000,'/assets/event/chest-legendary.png']];
-const Img=({src,alt=''})=><img src={src} alt={alt} onError={e=>{e.currentTarget.style.display='none';e.currentTarget.parentElement?.classList.add('asset-missing')}}/>;
+const Img=({src,alt=''})=><img src={src} alt={alt} onError={e=>{const img=e.currentTarget;img.onerror=null;img.src='/assets/event/event-ticket.png';img.classList.add('asset-fallback')}}/>;
 export default function EventShop(){
  const {session}=useAuth(),token=session?.access_token,[data,setData]=useState({wallet:{},items:[],ticketOffer:null}),[tab,setTab]=useState('red'),[notice,setNotice]=useState(''),[selected,setSelected]=useState(null);
  async function load(){try{setData(await botApi.eventShop(token))}catch(e){setNotice(`⚠️ ${e.message}`)}}
