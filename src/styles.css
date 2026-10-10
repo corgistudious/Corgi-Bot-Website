@@ -437,3 +437,20 @@ main:before{
 @media(max-width:560px){.event-shop-page .event-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}.compact-product{padding:10px!important;border-radius:15px!important}.compact-product .event-product-art{aspect-ratio:1/1}.event-tabs{margin-left:-2px;margin-right:-2px;padding:0 2px 4px;scrollbar-width:none}.event-tabs::-webkit-scrollbar{display:none}.event-tabs button{padding:8px 10px}.event-tabs img{width:22px;height:22px}.shop-detail{padding:16px}.shop-detail-art{height:220px}}
 @media(min-width:561px) and (max-width:900px){.event-shop-page .event-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(min-width:901px){.event-shop-page .event-product-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+
+
+/* Creator Market: show the complete 9:16 background artwork on product cards.
+   Keep the decorative gradient layer full-size; contain the actual image. */
+.market-card > .cosmetic-preview.cosmetic-background,
+.compact-product > .cosmetic-preview.cosmetic-background {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: 9 / 16;
+  align-self: start;
+  background-size: 100% 100%, contain;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-color: #0e0a07;
+}
