@@ -43,6 +43,7 @@ export const botApi = {
   marketplaceSubmit: (data, token) => request('/v1/marketplace/submit', { method: 'POST', token, body: data }),
   creatorMine: (token) => request('/v1/marketplace/creator/mine', { token }),
   creatorSubmit: (data, token) => request('/v1/marketplace/creator/submit', { method: 'POST', token, body: data }),
+  creatorDelete: (id, token) => request(`/v1/marketplace/creator/${encodeURIComponent(id)}/delete`, { method: 'POST', token }),
   creatorWallet: (token) => request('/v1/creator/wallet', { token }),
   creatorWithdraw: (token) => request('/v1/creator/wallet/withdraw', { method:'POST', token }),
   marketplaceReviewQueue: (token) => request('/v1/review/marketplace', { token }),
